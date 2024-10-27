@@ -2,24 +2,32 @@ name: Matrix Demo
 on: push
 jobs:
   matrix:
+    continue-on-error: true
     strategy:
       matrix:
         node-version: [12, 14, 20]
         operating-system: [ubuntu-latest, windows-latest]
+        include: 
+          - node-version: 18
+            operation-system: ubuntu-latest
+        exclude: 
+          - node-version: 12
+            operation-system: windows-latest
+            
     runs-on: ${{ matrix.operating-system }}
     steps:
       - name: Get code
         uses: actions/checkout@v4.1.2
       - name: Install Node
-        uses: actions/setup-node@v4.1.0
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Cache dependecies
-        id: cache
-        uses: actions/cache@v4.1.2
-        with:
-          path: ~/.npm
-          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+      # - name: Cache dependecies
+      #   id: cache
+      #   uses: actions/cache@v4.1.2
+      #   with:
+      #     path: ~/.npm
+      #     key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
       - name: Install Dependecies
         run: npm ci
       - name: Run Build
