@@ -31,6 +31,10 @@ jobs:
         with:
           path: ~/.npm
           key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+          
+      - name: Verify Vite installation
+        run: npm list vite || npm install vite
+  
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
