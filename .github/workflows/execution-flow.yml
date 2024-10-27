@@ -18,6 +18,8 @@ jobs:
       - name: Install dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
+      - name: Verify Lint is installed
+        run: npm list lint || npm install lint
       - name: Lint code
         run: npm run lint
   test:
