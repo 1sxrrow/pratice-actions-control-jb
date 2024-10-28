@@ -7,6 +7,9 @@ on:
         required: true
         default: dist
         type: string
+    secrets: 
+      some-secret: 
+        required: false
 jobs:
   reusable:
     runs-on: ubuntu-latest
