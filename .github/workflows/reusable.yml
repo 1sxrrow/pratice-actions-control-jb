@@ -1,8 +1,21 @@
 name: Reusable wf
-on: workflow_call
+on:
+  workflow_call:
+    inputs:
+      artifact-name:
+        description: the name of the deployed artifact
+        required: true
+        default: dist
+        type: string
 jobs:
-  reusable: 
+  reusable:
     runs-on: ubuntu-latest
-    steps: 
-        - name: Output Infos
-          run: echo "Deploy...."
+    steps:
+      - name: Get code
+        uses: actions/download-artifact@v4.1.8
+        with:
+          name: ${{ inputs.artifact-name }}
+      - name: Check content
+        run: ls
+      - name: Output Infos
+        run: echo "Deploy...."
